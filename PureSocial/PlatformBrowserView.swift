@@ -1,97 +1,66 @@
 import SwiftUI
 
-struct PlatformBrowserView: View {
+struct BrowserToolbarView: View {
+    let platform: SocialPlatform
     @ObservedObject var viewModel: WebViewModel
-    @Environment(\.dismiss) private var dismiss
+    let onSettings: () -> Void
 
     var body: some View {
         VStack(spacing: 0) {
-            header
-            progressBar
-            WebViewRepresentable(viewModel: viewModel)
-                .ignoresSafeArea(.container, edges: .bottom)
-            bottomToolbar
-        }
-        .background(Color(.systemBackground))
-    }
-
-    // MARK: - Subviews
-
-    private var header: some View {
-        HStack {
-            Button { dismiss() } label: {
-                Image(systemName: "xmark.circle.fill")
-                    .font(.title2)
-                    .foregroundStyle(.secondary)
-            }
-
-            Spacer()
-
-            HStack(spacing: 8) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 10)
-                        .fill(viewModel.platform.accentColor)
-                        .frame(width: 32, height: 32)
-                    Image(systemName: viewModel.platform.systemIconName)
-                        .font(.system(size: 15, weight: .semibold))
-                        .foregroundStyle(.white)
+            HStack(spacing: 0) {
+                HStack(spacing: 0) {
+                    NavBtn(icon: "chevron.left", enabled: viewModel.canGoBack) {
+                        viewModel.goBack()
+                    }
+                    NavBtn(icon: "chevron.right", enabled: viewModel.canGoForward) {
+                        viewModel.goForward()
+                    }
                 }
-                Text(viewModel.platform.name)
-                    .font(.headline)
-            }
 
-            Spacer()
+                Spacer()
 
-            // Invisible spacer to balance the close button
-            Image(systemName: "xmark.circle.fill")
-                .font(.title2)
-                .foregroundStyle(.clear)
-        }
-        .padding(.horizontal)
-        .padding(.vertical, 10)
-        .background(.ultraThinMaterial)
-    }
+                Button { viewModel.goHome() } label: {
+                    HStack(spacing: 7) {
+                        BrandDisc(platform: platform, size: 28, isActive: true)
+                        Text(platform.name)
+                            .font(.system(size: 15, weight: .semibold))
+                            .foregroundStyle(.primary)
+                        if viewModel.isLoading {
+                            ProgressView()
+                                .scaleEffect(0.65)
+                                .tint(.secondary)
+                        }
+                    }
+                }
 
-    @ViewBuilder
-    private var progressBar: some View {
-        if viewModel.isLoading {
-            GeometryReader { geo in
-                viewModel.platform.accentColor
-                    .frame(width: geo.size.width * viewModel.progress, height: 3)
-                    .animation(.linear(duration: 0.1), value: viewModel.progress)
-            }
-            .frame(height: 3)
-        } else {
-            Divider()
-        }
-    }
+                Spacer()
 
-    private var bottomToolbar: some View {
-        HStack(spacing: 0) {
-            BrowserButton(icon: "chevron.left", enabled: viewModel.canGoBack) {
-                viewModel.goBack()
+                HStack(spacing: 0) {
+                    NavBtn(icon: viewModel.isLoading ? "xmark" : "arrow.clockwise", enabled: true) {
+                        if viewModel.isLoading { viewModel.stopLoading() } else { viewModel.reload() }
+                    }
+                    NavBtn(icon: "slider.horizontal.3", enabled: true, action: onSettings)
+                }
             }
-            BrowserButton(icon: "chevron.right", enabled: viewModel.canGoForward) {
-                viewModel.goForward()
-            }
-            Spacer()
-            BrowserButton(icon: "house.fill", enabled: true) {
-                viewModel.goHome()
-            }
-            Spacer()
-            BrowserButton(icon: viewModel.isLoading ? "xmark" : "arrow.clockwise", enabled: true) {
-                if viewModel.isLoading { viewModel.stopLoading() } else { viewModel.reload() }
+            .frame(height: 44)
+            .padding(.horizontal, 4)
+            .background(Color.psBackground)
+
+            if viewModel.isLoading {
+                GeometryReader { geo in
+                    platform.accentColor
+                        .frame(width: geo.size.width * viewModel.progress, height: 2)
+                        .animation(.linear(duration: 0.08), value: viewModel.progress)
+                }
+                .frame(height: 2)
+            } else {
+                Divider()
             }
         }
-        .padding(.horizontal, 20)
-        .padding(.vertical, 12)
-        .background(.ultraThinMaterial)
     }
 }
 
-// MARK: - Browser Button
-
-private struct BrowserButton: View {
+private struct NavBtn: View {
     let icon: String
     let enabled: Bool
     let action: () -> Void
@@ -99,8 +68,8 @@ private struct BrowserButton: View {
     var body: some View {
         Button(action: action) {
             Image(systemName: icon)
-                .font(.system(size: 18, weight: .medium))
-                .foregroundStyle(enabled ? .primary : .tertiary)
+                .font(.system(size: 16, weight: .medium))
+                .foregroundStyle(enabled ? Color(white: 0.15) : Color(white: 0.62))
                 .frame(width: 44, height: 44)
         }
         .disabled(!enabled)

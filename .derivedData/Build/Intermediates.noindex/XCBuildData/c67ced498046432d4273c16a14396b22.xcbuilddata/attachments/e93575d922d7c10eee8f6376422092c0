@@ -1,0 +1,119 @@
+{
+  "" : {
+    "diagnostics" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/PureSocial-primary.dia",
+    "emit-module-dependencies" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/PureSocial-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/PureSocial-primary-emit-module.dia",
+    "pch" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/PureSocial-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/PureSocial-primary.swiftdeps"
+  },
+  "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/DerivedSources/GeneratedAssetSymbols.swift" : {
+    "const-values" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/GeneratedAssetSymbols.swiftconstvalues",
+    "dependencies" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/GeneratedAssetSymbols.d",
+    "diagnostics" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/GeneratedAssetSymbols.dia",
+    "index-unit-output-path" : "/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/GeneratedAssetSymbols.o",
+    "llvm-bc" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/GeneratedAssetSymbols.bc",
+    "object" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/GeneratedAssetSymbols.o",
+    "swift-dependencies" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/GeneratedAssetSymbols.swiftdeps",
+    "swiftmodule" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/GeneratedAssetSymbols~partial.swiftmodule"
+  },
+  "/Users/sharikmohamed/Documents/MyProject/PureSocial/PureSocial/ContentBlocker.swift" : {
+    "const-values" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/ContentBlocker.swiftconstvalues",
+    "dependencies" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/ContentBlocker.d",
+    "diagnostics" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/ContentBlocker.dia",
+    "index-unit-output-path" : "/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/ContentBlocker.o",
+    "llvm-bc" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/ContentBlocker.bc",
+    "object" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/ContentBlocker.o",
+    "swift-dependencies" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/ContentBlocker.swiftdeps",
+    "swiftmodule" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/ContentBlocker~partial.swiftmodule"
+  },
+  "/Users/sharikmohamed/Documents/MyProject/PureSocial/PureSocial/ContentView.swift" : {
+    "const-values" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/ContentView.swiftconstvalues",
+    "dependencies" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/ContentView.d",
+    "diagnostics" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/ContentView.dia",
+    "index-unit-output-path" : "/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/ContentView.o",
+    "llvm-bc" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/ContentView.bc",
+    "object" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/ContentView.o",
+    "swift-dependencies" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/ContentView.swiftdeps",
+    "swiftmodule" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/ContentView~partial.swiftmodule"
+  },
+  "/Users/sharikmohamed/Documents/MyProject/PureSocial/PureSocial/HomeView.swift" : {
+    "const-values" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/HomeView.swiftconstvalues",
+    "dependencies" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/HomeView.d",
+    "diagnostics" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/HomeView.dia",
+    "index-unit-output-path" : "/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/HomeView.o",
+    "llvm-bc" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/HomeView.bc",
+    "object" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/HomeView.o",
+    "swift-dependencies" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/HomeView.swiftdeps",
+    "swiftmodule" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/HomeView~partial.swiftmodule"
+  },
+  "/Users/sharikmohamed/Documents/MyProject/PureSocial/PureSocial/OnboardingView.swift" : {
+    "const-values" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/OnboardingView.swiftconstvalues",
+    "dependencies" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/OnboardingView.d",
+    "diagnostics" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/OnboardingView.dia",
+    "index-unit-output-path" : "/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/OnboardingView.o",
+    "llvm-bc" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/OnboardingView.bc",
+    "object" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/OnboardingView.o",
+    "swift-dependencies" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/OnboardingView.swiftdeps",
+    "swiftmodule" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/OnboardingView~partial.swiftmodule"
+  },
+  "/Users/sharikmohamed/Documents/MyProject/PureSocial/PureSocial/PlatformBrowserView.swift" : {
+    "const-values" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/PlatformBrowserView.swiftconstvalues",
+    "dependencies" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/PlatformBrowserView.d",
+    "diagnostics" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/PlatformBrowserView.dia",
+    "index-unit-output-path" : "/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/PlatformBrowserView.o",
+    "llvm-bc" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/PlatformBrowserView.bc",
+    "object" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/PlatformBrowserView.o",
+    "swift-dependencies" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/PlatformBrowserView.swiftdeps",
+    "swiftmodule" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/PlatformBrowserView~partial.swiftmodule"
+  },
+  "/Users/sharikmohamed/Documents/MyProject/PureSocial/PureSocial/PureSocialApp.swift" : {
+    "const-values" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/PureSocialApp.swiftconstvalues",
+    "dependencies" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/PureSocialApp.d",
+    "diagnostics" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/PureSocialApp.dia",
+    "index-unit-output-path" : "/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/PureSocialApp.o",
+    "llvm-bc" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/PureSocialApp.bc",
+    "object" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/PureSocialApp.o",
+    "swift-dependencies" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/PureSocialApp.swiftdeps",
+    "swiftmodule" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/PureSocialApp~partial.swiftmodule"
+  },
+  "/Users/sharikmohamed/Documents/MyProject/PureSocial/PureSocial/SettingsView.swift" : {
+    "const-values" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/SettingsView.swiftconstvalues",
+    "dependencies" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/SettingsView.d",
+    "diagnostics" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/SettingsView.dia",
+    "index-unit-output-path" : "/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/SettingsView.o",
+    "llvm-bc" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/SettingsView.bc",
+    "object" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/SettingsView.o",
+    "swift-dependencies" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/SettingsView.swiftdeps",
+    "swiftmodule" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/SettingsView~partial.swiftmodule"
+  },
+  "/Users/sharikmohamed/Documents/MyProject/PureSocial/PureSocial/SocialPlatform.swift" : {
+    "const-values" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/SocialPlatform.swiftconstvalues",
+    "dependencies" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/SocialPlatform.d",
+    "diagnostics" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/SocialPlatform.dia",
+    "index-unit-output-path" : "/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/SocialPlatform.o",
+    "llvm-bc" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/SocialPlatform.bc",
+    "object" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/SocialPlatform.o",
+    "swift-dependencies" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/SocialPlatform.swiftdeps",
+    "swiftmodule" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/SocialPlatform~partial.swiftmodule"
+  },
+  "/Users/sharikmohamed/Documents/MyProject/PureSocial/PureSocial/WebViewModel.swift" : {
+    "const-values" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/WebViewModel.swiftconstvalues",
+    "dependencies" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/WebViewModel.d",
+    "diagnostics" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/WebViewModel.dia",
+    "index-unit-output-path" : "/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/WebViewModel.o",
+    "llvm-bc" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/WebViewModel.bc",
+    "object" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/WebViewModel.o",
+    "swift-dependencies" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/WebViewModel.swiftdeps",
+    "swiftmodule" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/WebViewModel~partial.swiftmodule"
+  },
+  "/Users/sharikmohamed/Documents/MyProject/PureSocial/PureSocial/WebViewRepresentable.swift" : {
+    "const-values" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/WebViewRepresentable.swiftconstvalues",
+    "dependencies" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/WebViewRepresentable.d",
+    "diagnostics" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/WebViewRepresentable.dia",
+    "index-unit-output-path" : "/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/WebViewRepresentable.o",
+    "llvm-bc" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/WebViewRepresentable.bc",
+    "object" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/WebViewRepresentable.o",
+    "swift-dependencies" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/WebViewRepresentable.swiftdeps",
+    "swiftmodule" : "/Users/sharikmohamed/Documents/MyProject/PureSocial/.derivedData/Build/Intermediates.noindex/PureSocial.build/Debug/PureSocial.build/Objects-normal/x86_64/WebViewRepresentable~partial.swiftmodule"
+  }
+}

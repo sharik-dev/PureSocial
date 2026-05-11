@@ -16,7 +16,7 @@ class WebViewModel: NSObject, ObservableObject {
     init(platform: SocialPlatform) {
         self.platform = platform
         super.init()
-        _ = webView  // eagerly initialize so the web view loads on platform tap
+        _ = webView
     }
 
     deinit {
@@ -29,9 +29,11 @@ class WebViewModel: NSObject, ObservableObject {
     func goForward()   { webView.goForward() }
     func reload()      { webView.reload() }
     func stopLoading() { webView.stopLoading() }
+    func goHome()      { navigate(to: platform.startURL) }
+    func compose()     { if let url = platform.composeURL { navigate(to: url) } }
 
-    func goHome() {
-        guard let url = URL(string: platform.startURL) else { return }
+    func navigate(to urlString: String) {
+        guard let url = URL(string: urlString) else { return }
         webView.load(URLRequest(url: url))
     }
 
@@ -40,7 +42,8 @@ class WebViewModel: NSObject, ObservableObject {
     private func createWebView() -> WKWebView {
         let config = WKWebViewConfiguration()
         config.allowsInlineMediaPlayback = true
-        config.mediaTypesRequiringUserActionForPlayback = []
+        // Require explicit user tap to play any video/audio — prevents reels/shorts autoplay
+        config.mediaTypesRequiringUserActionForPlayback = .all
 
         let ucc = WKUserContentController()
         ucc.addUserScript(ContentBlocker.userScript(for: platform.id))
@@ -49,7 +52,7 @@ class WebViewModel: NSObject, ObservableObject {
         let wv = WKWebView(frame: .zero, configuration: config)
         wv.navigationDelegate = self
         wv.allowsBackForwardNavigationGestures = true
-        // Mobile Safari UA for best site compatibility
+        // Mobile Safari UA — proper responsive layout on all platforms
         wv.customUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1"
 
         observations = [
@@ -82,8 +85,7 @@ extension WebViewModel: WKNavigationDelegate {
                  decidePolicyFor navigationAction: WKNavigationAction,
                  decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         guard let urlString = navigationAction.request.url?.absoluteString else {
-            decisionHandler(.allow)
-            return
+            decisionHandler(.allow); return
         }
         for pattern in blockedPatterns {
             if urlString.range(of: pattern, options: .regularExpression) != nil {
@@ -96,6 +98,7 @@ extension WebViewModel: WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        // Re-inject CSS + re-run DOM hider after every page finish (covers reloads + SPA nav)
         let js = ContentBlocker.reinjectJS(for: platform.id)
         guard !js.isEmpty else { return }
         webView.evaluateJavaScript(js, completionHandler: nil)
@@ -103,7 +106,7 @@ extension WebViewModel: WKNavigationDelegate {
 
     private var blockedPatterns: [String] {
         switch platform.id {
-        case "instagram": return ["/reels(/|$)", "/explore(/|$)", "/stories/[^/]+/"]
+        case "instagram": return ["/reels(/|$)"]
         case "facebook":  return ["/watch(/|$)", "/gaming(/|$)"]
         case "youtube":   return ["/shorts(/|$)"]
         default:          return []
