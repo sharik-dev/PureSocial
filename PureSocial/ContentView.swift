@@ -2,15 +2,7 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "swift")
-                .imageScale(.large)
-                .foregroundStyle(.orange)
-            Text("PureSocial")
-                .font(.largeTitle)
-                .bold()
-        }
-        .padding()
+        HomeView()
     }
 }
 
