@@ -74,11 +74,8 @@ enum ContentBlocker {
         switch platformId {
         case "instagram": return instagramCSS
         case "facebook":  return facebookCSS
-        case "x":         return twitterCSS
-        case "linkedin":  return linkedinCSS
         case "youtube":   return youtubeCSS
         case "reddit":    return redditCSS
-        case "tiktok":    return tiktokCSS
         default:          return ""
         }
     }
@@ -88,6 +85,7 @@ enum ContentBlocker {
     static func domHidingJS(for platformId: String) -> String {
         switch platformId {
         case "instagram": return instagramHidingJS
+        case "facebook":  return facebookHidingJS
         default:          return "function hideContent() {}"
         }
     }
@@ -134,6 +132,11 @@ enum ContentBlocker {
             el.classList.add('ps-muted-blocked');
         }
 
+        function unmute(el) {
+            if (!el) return;
+            el.classList.remove('ps-muted-blocked');
+        }
+
         function closestMatching(start, predicate, maxDepth) {
             var el = start;
             for (var i = 0; i < maxDepth; i++) {
@@ -144,9 +147,66 @@ enum ContentBlocker {
             return null;
         }
 
+        function normalizeText(value) {
+            return (value || '')
+                .toLowerCase()
+                .normalize('NFD')
+                .replace(/[\\u0300-\\u036f]/g, '')
+                .trim();
+        }
+
+        function elementHasActionLabel(el, labels) {
+            if (!el) return false;
+
+            var candidates = [
+                el.textContent,
+                el.getAttribute && el.getAttribute('aria-label'),
+                el.getAttribute && el.getAttribute('title')
+            ];
+
+            for (var i = 0; i < candidates.length; i++) {
+                var text = normalizeText(candidates[i]);
+                if (!text) continue;
+                for (var j = 0; j < labels.length; j++) {
+                    if (text.indexOf(labels[j]) !== -1) return true;
+                }
+            }
+
+            return false;
+        }
+
+        function unmuteAncestors(el, maxDepth) {
+            var current = el;
+            for (var i = 0; i < maxDepth; i++) {
+                if (!current || current === document.body) break;
+                unmute(current);
+                current = current.parentElement;
+            }
+        }
+
+        function shouldKeepArticleInteractive(article) {
+            if (!article) return false;
+
+            // Never mute nav bar, activity panels, dialogs, creation modals
+            if (article.closest('[role=\"dialog\"], form, nav, [role=\"navigation\"], [role=\"tablist\"], [role=\"complementary\"], [role=\"banner\"]')) return true;
+            // Never mute articles inside notification or activity containers
+            if (article.closest('[aria-label*=\"otif\"], [aria-label*=\"ctivit\"], [aria-label*=\"Activity\"], [aria-label*=\"Notif\"]')) return true;
+
+            if (article.querySelector('textarea, input:not([type=\"hidden\"]), form, [contenteditable=\"true\"], [role=\"textbox\"]')) return true;
+
+            var publishLabels = ['publier', 'publish', 'share', 'partager', 'post', 'next', 'suivant', 'done', 'terminer'];
+            var actionNodes = article.querySelectorAll('button, [role=\"button\"], a, div');
+            for (var i = 0; i < actionNodes.length; i++) {
+                if (elementHasActionLabel(actionNodes[i], publishLabels)) return true;
+            }
+
+            return false;
+        }
+
         // Publications in the feed and explore grids.
         var articles = document.querySelectorAll('article');
         for (var i = 0; i < articles.length; i++) {
+            if (shouldKeepArticleInteractive(articles[i])) continue;
             mute(articles[i]);
         }
 
@@ -195,28 +255,140 @@ enum ContentBlocker {
                 }
             }
         }
+
+        var allowedActionLabels = ['publier', 'publish', 'share', 'partager', 'j aime', 'like', 'unlike', 'notification', 'activity', 'heart', 'coeur'];
+        var allowedActionNodes = document.querySelectorAll('button, [role=\"button\"], a, svg');
+        for (var m = 0; m < allowedActionNodes.length; m++) {
+            if (!elementHasActionLabel(allowedActionNodes[m], allowedActionLabels)) continue;
+            unmuteAncestors(allowedActionNodes[m], 8);
+        }
     }
     """
 
     // MARK: - Facebook
 
     static let facebookCSS = """
-    [data-pagelet*="Stories"], [data-pagelet*="Reels"],
-    [role="feed"], [data-pagelet*="FeedUnit"] { display: none !important; }
-    [aria-label*="Watch"], [href*="/watch"] { display: none !important; }
-    [aria-label*="Marketplace"], [href*="/marketplace"] { display: none !important; }
-    [aria-label*="Gaming"], [href*="/gaming"] { display: none !important; }
-    [aria-label*="Videos"], [href*="/video/"] { display: none !important; }
+    .ps-muted-blocked {
+        opacity: 0.12 !important;
+        filter: grayscale(1) saturate(0) !important;
+        pointer-events: none !important;
+        user-select: none !important;
+    }
+
+    .ps-muted-blocked * {
+        pointer-events: none !important;
+    }
+
+    [href^="fb://"],
+    [aria-label*="open in app" i],
+    [aria-label*="ouvrir l’application" i],
+    [aria-label*="ouvrir l'application" i] {
+        display: none !important;
+    }
+    """
+
+    static let facebookHidingJS = """
+    function hideContent() {
+        if (!document.body) return;
+
+        function mute(el) {
+            if (!el) return;
+            el.classList.add('ps-muted-blocked');
+        }
+
+        function closestMatching(start, predicate, maxDepth) {
+            var el = start;
+            for (var i = 0; i < maxDepth; i++) {
+                if (!el || el === document.body) break;
+                if (predicate(el)) return el;
+                el = el.parentElement;
+            }
+            return null;
+        }
+
+        var postTargets = document.querySelectorAll('[role="feed"] [role="article"], [data-pagelet*="FeedUnit"], [data-ad-comet-preview="message"]');
+        for (var i = 0; i < postTargets.length; i++) {
+            mute(postTargets[i]);
+        }
+
+        var storyAndReelTargets = document.querySelectorAll('[data-pagelet*="Stories"], [data-pagelet*="Reels"], a[href*="/stories/"], a[href*="/reel/"], a[href*="/reels/"]');
+        for (var j = 0; j < storyAndReelTargets.length; j++) {
+            mute(closestMatching(storyAndReelTargets[j], function(el) {
+                return el.children.length >= 1;
+            }, 5) || storyAndReelTargets[j]);
+        }
+
+        var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+        var node;
+        while ((node = walker.nextNode())) {
+            var text = node.textContent.trim().toLowerCase();
+            if (text !== 'open app' &&
+                text !== 'open in app' &&
+                text !== 'ouvrir l’application' &&
+                text !== 'ouvrir l\\'application') {
+                continue;
+            }
+
+            var appPrompt = closestMatching(node.parentElement, function(el) {
+                return el.tagName === 'A' || el.tagName === 'BUTTON' || el.getAttribute('role') === 'button' || el.children.length >= 1;
+            }, 8);
+
+            if (appPrompt) {
+                appPrompt.style.setProperty('display', 'none', 'important');
+                var wrapper = closestMatching(appPrompt.parentElement, function(el) {
+                    return el.children.length <= 3;
+                }, 3);
+                if (wrapper) wrapper.style.setProperty('display', 'none', 'important');
+            }
+        }
+    }
     """
 
     // MARK: - X / Twitter
 
     static let twitterCSS = """
-    [data-testid="primaryColumn"] [data-testid="tweet"] { display: none !important; }
-    [aria-label*="Timeline: Trending now"] { display: none !important; }
-    [data-testid="sidebarColumn"] { display: none !important; }
-    [data-testid="UserCell"] { display: none !important; }
-    [aria-label="Who to follow"] { display: none !important; }
+    .ps-muted-blocked {
+        opacity: 0.12 !important;
+        filter: grayscale(1) saturate(0) !important;
+        pointer-events: none !important;
+        user-select: none !important;
+    }
+    .ps-muted-blocked * { pointer-events: none !important; }
+    """
+
+    static let twitterHidingJS = """
+    function hideContent() {
+        if (!document.body) return;
+
+        function mute(el) {
+            if (el) el.classList.add('ps-muted-blocked');
+        }
+
+        // Home / For You / Following timeline containers
+        var timelineLabels = [
+            '[aria-label="Home timeline"]',
+            '[aria-label="Timeline: Your Home Timeline"]',
+            '[aria-label*="For you"]',
+            '[aria-label*="Following timeline"]'
+        ];
+        for (var t = 0; t < timelineLabels.length; t++) {
+            var els = document.querySelectorAll(timelineLabels[t]);
+            for (var i = 0; i < els.length; i++) mute(els[i]);
+        }
+
+        // Trending / What's happening
+        var trending = document.querySelectorAll(
+            '[aria-label*="Timeline: Trending now"], [aria-label="Who to follow"]'
+        );
+        for (var j = 0; j < trending.length; j++) mute(trending[j]);
+
+        // Sidebar user suggestions (desktop) — keep DM user search intact
+        var sidebar = document.querySelector('[data-testid="sidebarColumn"]');
+        if (sidebar) {
+            var cells = sidebar.querySelectorAll('[data-testid="UserCell"]');
+            for (var k = 0; k < cells.length; k++) mute(cells[k]);
+        }
+    }
     """
 
     // MARK: - LinkedIn
@@ -252,9 +424,41 @@ enum ContentBlocker {
     // MARK: - TikTok
 
     static let tiktokCSS = """
-    [data-e2e="recommend-list-item-container"] { display: none !important; }
-    [class*="DivVideoFeed"] { display: none !important; }
-    [class*="DivItemContainer"] { display: none !important; }
+    .ps-muted-blocked {
+        opacity: 0.12 !important;
+        filter: grayscale(1) saturate(0) !important;
+        pointer-events: none !important;
+        user-select: none !important;
+    }
+    .ps-muted-blocked * { pointer-events: none !important; }
+    """
+
+    static let tiktokHidingJS = """
+    function hideContent() {
+        if (!document.body) return;
+
+        function mute(el) {
+            if (!el) return;
+            el.classList.add('ps-muted-blocked');
+            // Pause any autoplaying video inside
+            var videos = el.querySelectorAll('video');
+            for (var i = 0; i < videos.length; i++) {
+                videos[i].pause();
+                videos[i].autoplay = false;
+            }
+        }
+
+        var feedSelectors = [
+            '[data-e2e="recommend-list-item-container"]',
+            '[class*="DivVideoFeed"]',
+            '[class*="DivItemContainer"]',
+            '[class*="VideoFeedCard"]'
+        ];
+        for (var s = 0; s < feedSelectors.length; s++) {
+            var items = document.querySelectorAll(feedSelectors[s]);
+            for (var i = 0; i < items.length; i++) mute(items[i]);
+        }
+    }
     """
 
     // MARK: - Helpers

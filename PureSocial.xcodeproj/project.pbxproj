@@ -17,6 +17,8 @@
 		A1B2C3D4E5F6000000000CAB /* PlatformBrowserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6000000000BAB /* PlatformBrowserView.swift */; };
 		A1B2C3D4E5F6000000000EAB /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F6000000000DAB /* SettingsView.swift */; };
 		A1B2C3D4E5F60000000012AB /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60000000011AB /* OnboardingView.swift */; };
+		A1B2C3D4E5F60000000014AB /* Haptics.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60000000013AB /* Haptics.swift */; };
+		A1B2C3D4E5F60000000016AB /* AuthSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60000000015AB /* AuthSheetView.swift */; };
 		CC6F714A3DC1626C7AC11336 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F33AC1EEC408A29A47155EF3 /* ContentView.swift */; };
 		F2F6FB28004FD146AF142209 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BFD8F48295C0C4BE745E7F20 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -32,6 +34,8 @@
 		A1B2C3D4E5F6000000000BAB /* PlatformBrowserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformBrowserView.swift; sourceTree = "<group>"; };
 		A1B2C3D4E5F6000000000DAB /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		A1B2C3D4E5F60000000011AB /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60000000013AB /* Haptics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Haptics.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60000000015AB /* AuthSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthSheetView.swift; sourceTree = "<group>"; };
 		BFD8F48295C0C4BE745E7F20 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DCBD05D2AD4C3F1E79C86DC8 /* PureSocial.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PureSocial.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F33AC1EEC408A29A47155EF3 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -69,6 +73,8 @@
 				A1B2C3D4E5F6000000000BAB /* PlatformBrowserView.swift */,
 				A1B2C3D4E5F6000000000DAB /* SettingsView.swift */,
 				A1B2C3D4E5F60000000011AB /* OnboardingView.swift */,
+				A1B2C3D4E5F60000000013AB /* Haptics.swift */,
+				A1B2C3D4E5F60000000015AB /* AuthSheetView.swift */,
 				BFD8F48295C0C4BE745E7F20 /* Assets.xcassets */,
 				361D52DEAE07C0DE1091F8EE /* Preview Content */,
 			);
@@ -171,6 +177,8 @@
 				A1B2C3D4E5F6000000000CAB /* PlatformBrowserView.swift in Sources */,
 				A1B2C3D4E5F6000000000EAB /* SettingsView.swift in Sources */,
 				A1B2C3D4E5F60000000012AB /* OnboardingView.swift in Sources */,
+				A1B2C3D4E5F60000000014AB /* Haptics.swift in Sources */,
+				A1B2C3D4E5F60000000016AB /* AuthSheetView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -19,7 +19,10 @@ struct BrowserToolbarView: View {
 
                 Spacer()
 
-                Button { viewModel.goHome() } label: {
+                Button {
+                    Haptics.tap()
+                    viewModel.goHome()
+                } label: {
                     HStack(spacing: 7) {
                         BrandDisc(platform: platform, size: 28, isActive: true)
                         Text(platform.name)
@@ -66,7 +69,10 @@ private struct NavBtn: View {
     let action: () -> Void
 
     var body: some View {
-        Button(action: action) {
+        Button {
+            Haptics.tap()
+            action()
+        } label: {
             Image(systemName: icon)
                 .font(.system(size: 16, weight: .medium))
                 .foregroundStyle(enabled ? Color(white: 0.15) : Color(white: 0.62))

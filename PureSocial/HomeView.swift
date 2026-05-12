@@ -60,6 +60,7 @@ struct PlatformTabBar: View {
                         .frame(maxWidth: .infinity)
                         .contentShape(Rectangle())
                         .onTapGesture {
+                            Haptics.selection()
                             withAnimation(.spring(response: 0.28, dampingFraction: 0.72)) {
                                 activeIndex = index
                             }
@@ -89,6 +90,7 @@ struct PlatformTabBar: View {
                             .frame(width: scrollItemWidth)
                             .contentShape(Rectangle())
                             .onTapGesture {
+                                Haptics.selection()
                                 withAnimation(.spring(response: 0.28, dampingFraction: 0.72)) {
                                     activeIndex = index
                                 }

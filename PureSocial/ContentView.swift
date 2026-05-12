@@ -46,9 +46,10 @@ struct ContentView: View {
                     emptyState
                 } else {
                     ForEach(Array(enabled.enumerated()), id: \.element.id) { index, platform in
-                        WebViewRepresentable(viewModel: vm(for: platform))
-                            .opacity(index == activeIndex ? 1 : 0)
-                            .allowsHitTesting(index == activeIndex)
+                        PlatformWebContainer(
+                            viewModel: vm(for: platform),
+                            isActive: index == activeIndex
+                        )
                     }
                 }
             }
@@ -85,7 +86,10 @@ struct ContentView: View {
                     .font(.headline)
             }
             Spacer()
-            Button { showSettings = true } label: {
+            Button {
+                Haptics.tap()
+                showSettings = true
+            } label: {
                 Image(systemName: "slider.horizontal.3")
                     .font(.system(size: 16, weight: .medium))
             }
@@ -126,6 +130,7 @@ struct ContentView: View {
 
             // Full-width black pill CTA
             Button {
+                Haptics.tap()
                 showSettings = true
             } label: {
                 Text("Pick three to start")
@@ -155,6 +160,7 @@ struct ContentView: View {
 
     private func enablePlatform(_ platform: SocialPlatform) {
         guard let index = platforms.firstIndex(where: { $0.id == platform.id }) else { return }
+        Haptics.selection()
         platforms[index].isEnabled = true
         savePlatforms()
         clampIndex()
@@ -166,7 +172,10 @@ struct ContentView: View {
         guard !platformsData.isEmpty,
               let decoded = try? JSONDecoder().decode([SocialPlatform].self, from: platformsData)
         else { platforms = SocialPlatform.defaults; return }
-        platforms = decoded
+
+        let existingIds = Set(decoded.map(\.id))
+        let missingDefaults = SocialPlatform.defaults.filter { !existingIds.contains($0.id) }
+        platforms = decoded + missingDefaults
     }
 
     func savePlatforms() {
@@ -203,6 +212,35 @@ struct PlatformChip: View {
             )
         }
         .buttonStyle(.plain)
+    }
+}
+
+// ── Per-platform web container — observes its viewModel for auth sheet ───────
+
+struct PlatformWebContainer: View {
+    @ObservedObject var viewModel: WebViewModel
+    let isActive: Bool
+
+    var body: some View {
+        WebViewRepresentable(viewModel: viewModel)
+            .opacity(isActive ? 1 : 0)
+            .allowsHitTesting(isActive)
+            .sheet(isPresented: Binding(
+                get: { viewModel.authWebView != nil },
+                set: { showing in
+                    if !showing {
+                        viewModel.authWebView = nil
+                        viewModel.goHome()
+                    }
+                }
+            )) {
+                if let authWV = viewModel.authWebView {
+                    AuthSheetView(webView: authWV) {
+                        viewModel.authWebView = nil
+                        viewModel.goHome()
+                    }
+                }
+            }
     }
 }
 

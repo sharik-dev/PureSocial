@@ -10,9 +10,15 @@ struct OnboardingView: View {
 
     var body: some View {
         TabView(selection: $step) {
-            WelcomeScreen(onContinue: { step = 1 })
+            WelcomeScreen(onContinue: {
+                Haptics.tap()
+                step = 1
+            })
                 .tag(0)
-            PickPlatformsScreen(platforms: $platforms, onComplete: onComplete)
+            PickPlatformsScreen(platforms: $platforms, onComplete: {
+                Haptics.tap()
+                onComplete()
+            })
                 .tag(1)
         }
         .tabViewStyle(.page(indexDisplayMode: .never))
@@ -137,6 +143,7 @@ private struct OnboardingPlatformCell: View {
 
     var body: some View {
         Button {
+            Haptics.selection()
             withAnimation(.spring(response: 0.28, dampingFraction: 0.72)) {
                 platform.isEnabled.toggle()
             }
