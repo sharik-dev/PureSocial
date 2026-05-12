@@ -114,12 +114,6 @@ enum ContentBlocker {
         pointer-events: none !important;
     }
 
-    /* Story viewer should not be usable if it opens. */
-    [role="dialog"]:has([aria-label*="tory" i]) {
-        opacity: 0.12 !important;
-        filter: grayscale(1) saturate(0) !important;
-        pointer-events: none !important;
-    }
     """
 
     // JS layer: tags stories, reels and publications without removing their containers.
