@@ -3,6 +3,9 @@ import SwiftUI
 struct SettingsView: View {
     @Binding var platforms: [SocialPlatform]
     @Environment(\.dismiss) private var dismiss
+    @AppStorage("grayscaleEnabled") private var grayscaleEnabled = false
+    @AppStorage("muteSoundEnabled") private var muteSoundEnabled = false
+    @AppStorage("blockVideoEnabled") private var blockVideoEnabled = false
 
     private let blockedFeatures = ["feeds", "stories", "reels", "explore", "shorts", "suggestions"]
 
@@ -26,6 +29,44 @@ struct SettingsView: View {
                     }
                 }
                 .environment(\.editMode, .constant(.active))
+
+                Section {
+                    HStack(spacing: 14) {
+                        Image(systemName: "circle.lefthalf.filled")
+                            .foregroundStyle(.primary)
+                        Text("Black & white")
+                        Spacer()
+                        Toggle("", isOn: $grayscaleEnabled)
+                            .labelsHidden()
+                    }
+                    .padding(.vertical, 2)
+                } header: {
+                    Text("Appearance")
+                }
+
+                Section {
+                    HStack(spacing: 14) {
+                        Image(systemName: "speaker.slash.fill")
+                            .foregroundStyle(.primary)
+                        Text("Block sound")
+                        Spacer()
+                        Toggle("", isOn: $muteSoundEnabled)
+                            .labelsHidden()
+                    }
+                    .padding(.vertical, 2)
+
+                    HStack(spacing: 14) {
+                        Image(systemName: "video.slash.fill")
+                            .foregroundStyle(.primary)
+                        Text("Block video")
+                        Spacer()
+                        Toggle("", isOn: $blockVideoEnabled)
+                            .labelsHidden()
+                    }
+                    .padding(.vertical, 2)
+                } header: {
+                    Text("Media")
+                }
 
                 Section {
                     VStack(alignment: .leading, spacing: 8) {

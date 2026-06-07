@@ -3,10 +3,15 @@ import SwiftUI
 struct ContentView: View {
     @AppStorage("platformsData") private var platformsData: Data = Data()
     @AppStorage("onboardingComplete") private var onboardingComplete = false
+    @AppStorage("grayscaleEnabled") private var grayscaleEnabled = false
 
     @State private var platforms: [SocialPlatform] = []
     @State private var activeIndex: Int = 0
-    @State private var viewModels: [String: WebViewModel] = [:]
+    // Reference-type cache: WebViewModels are created lazily in `body` via `vm(for:)`.
+    // It must NOT be @State holding a dictionary — mutating @State during body evaluation
+    // triggers "Modifying state during view update" and an infinite re-render loop. A class
+    // held by @State is stored by reference, so mutating its contents never invalidates the view.
+    @State private var viewModels = WebViewModelStore()
     @State private var showSettings = false
 
     private var enabled: [SocialPlatform] { platforms.filter(\.isEnabled) }
@@ -72,6 +77,8 @@ struct ContentView: View {
                 savePlatforms()
             }
         }
+        .grayscale(grayscaleEnabled ? 1 : 0)
+        .saturation(grayscaleEnabled ? 0 : 1)
         .onAppear { loadPlatforms() }
     }
 
@@ -150,10 +157,7 @@ struct ContentView: View {
     // MARK: - ViewModel cache
 
     private func vm(for platform: SocialPlatform) -> WebViewModel {
-        if let existing = viewModels[platform.id] { return existing }
-        let model = WebViewModel(platform: platform)
-        viewModels[platform.id] = model
-        return model
+        viewModels.model(for: platform)
     }
 
     // MARK: - Helpers
@@ -171,11 +175,15 @@ struct ContentView: View {
     private func loadPlatforms() {
         guard !platformsData.isEmpty,
               let decoded = try? JSONDecoder().decode([SocialPlatform].self, from: platformsData)
-        else { platforms = SocialPlatform.defaults; return }
+        else {
+            platforms = SocialPlatform.defaults; return
+        }
 
         let existingIds = Set(decoded.map(\.id))
         let missingDefaults = SocialPlatform.defaults.filter { !existingIds.contains($0.id) }
-        platforms = decoded + missingDefaults
+        // Platforms removed from the app — drop them even if persisted by older installs.
+        let removedIds: Set<String> = ["facebook"]
+        platforms = (decoded + missingDefaults).filter { !removedIds.contains($0.id) }
     }
 
     func savePlatforms() {
@@ -187,6 +195,22 @@ struct ContentView: View {
     private func clampIndex() {
         let count = enabled.count
         if count == 0 { activeIndex = 0 } else if activeIndex >= count { activeIndex = count - 1 }
+    }
+}
+
+// ── WebViewModel cache ───────────────────────────────────────────────────────
+// Holds one long-lived WebViewModel per platform. A reference type (not a @State
+// dictionary) so it can be populated lazily from within `body` without mutating
+// SwiftUI state mid-render. Identity is stable for the lifetime of ContentView.
+
+final class WebViewModelStore {
+    private var cache: [String: WebViewModel] = [:]
+
+    func model(for platform: SocialPlatform) -> WebViewModel {
+        if let existing = cache[platform.id] { return existing }
+        let model = WebViewModel(platform: platform)
+        cache[platform.id] = model
+        return model
     }
 }
 
@@ -225,21 +249,9 @@ struct PlatformWebContainer: View {
         WebViewRepresentable(viewModel: viewModel)
             .opacity(isActive ? 1 : 0)
             .allowsHitTesting(isActive)
-            .sheet(isPresented: Binding(
-                get: { viewModel.authWebView != nil },
-                set: { showing in
-                    if !showing {
-                        viewModel.authWebView = nil
-                        viewModel.goHome()
-                    }
-                }
-            )) {
-                if let authWV = viewModel.authWebView {
-                    AuthSheetView(webView: authWV) {
-                        viewModel.authWebView = nil
-                        viewModel.goHome()
-                    }
-                }
+            .onAppear { if isActive { viewModel.loadInitialIfNeeded() } }
+            .onChange(of: isActive) { active in
+                if active { viewModel.loadInitialIfNeeded() }
             }
     }
 }

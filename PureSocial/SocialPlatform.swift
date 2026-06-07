@@ -8,9 +8,10 @@ struct SocialPlatform: Identifiable, Codable, Equatable {
 
     static let defaults: [SocialPlatform] = [
         SocialPlatform(id: "whatsapp",   name: "WhatsApp",    startURL: "https://web.whatsapp.com",                   isEnabled: true),
-        SocialPlatform(id: "instagram",  name: "Instagram",   startURL: "https://www.instagram.com/direct/inbox/",    isEnabled: true),
-        SocialPlatform(id: "facebook",   name: "Facebook",    startURL: "https://www.facebook.com/messages/",         isEnabled: true),
-        SocialPlatform(id: "messenger",  name: "Messenger",   startURL: "https://www.messenger.com",                  isEnabled: false),
+        SocialPlatform(id: "instagram",         name: "Instagram",    startURL: "https://www.instagram.com/direct/inbox/",   isEnabled: true),
+        SocialPlatform(id: "instagram-dm",      name: "IG Messages",  startURL: "https://www.instagram.com/direct/inbox/",   isEnabled: false),
+        SocialPlatform(id: "instagram-publish", name: "IG Publish",   startURL: "https://www.instagram.com/",                isEnabled: false),
+        SocialPlatform(id: "messenger",         name: "Messenger",    startURL: "https://www.messenger.com",                 isEnabled: false),
         SocialPlatform(id: "gmail",      name: "Gmail",       startURL: "https://mail.google.com/mail/u/0/#inbox",    isEnabled: true),
         SocialPlatform(id: "x",          name: "X / Twitter", startURL: "https://x.com/messages",                    isEnabled: true),
         SocialPlatform(id: "linkedin",   name: "LinkedIn",    startURL: "https://www.linkedin.com/messaging/",        isEnabled: true),
@@ -24,9 +25,10 @@ struct SocialPlatform: Identifiable, Codable, Equatable {
     var shortLabel: String {
         switch id {
         case "whatsapp":   return "WA"
-        case "instagram":  return "IG"
-        case "facebook":   return "FB"
-        case "messenger":  return "MS"
+        case "instagram":         return "IG"
+        case "instagram-dm":      return "DM"
+        case "instagram-publish": return "POST"
+        case "messenger":         return "MS"
         case "gmail":      return "GM"
         case "x":          return "X"
         case "linkedin":   return "LI"
@@ -42,9 +44,10 @@ struct SocialPlatform: Identifiable, Codable, Equatable {
     var tabLabel: String {
         switch id {
         case "whatsapp":   return "CHAT"
-        case "instagram":  return "PHOTOS"
-        case "facebook":   return "FEED"
-        case "messenger":  return "DMs"
+        case "instagram":         return "PHOTOS"
+        case "instagram-dm":      return "DMs"
+        case "instagram-publish": return "PUBLISH"
+        case "messenger":         return "DMs"
         case "gmail":      return "MAIL"
         case "x":          return "POSTS"
         case "linkedin":   return "NETWORK"
@@ -60,9 +63,10 @@ struct SocialPlatform: Identifiable, Codable, Equatable {
     var systemIconName: String {
         switch id {
         case "whatsapp":   return "phone.bubble.left.fill"
-        case "instagram":  return "camera.fill"
-        case "facebook":   return "person.2.fill"
-        case "messenger":  return "bubble.left.and.bubble.right.fill"
+        case "instagram":         return "camera.fill"
+        case "instagram-dm":      return "message.fill"
+        case "instagram-publish": return "plus.square.fill"
+        case "messenger":         return "bubble.left.and.bubble.right.fill"
         case "gmail":      return "envelope.fill"
         case "x":          return "bird.fill"
         case "linkedin":   return "briefcase.fill"
@@ -79,7 +83,6 @@ struct SocialPlatform: Identifiable, Codable, Equatable {
     var composeURL: String? {
         switch id {
         case "instagram": return "https://www.instagram.com/"
-        case "facebook":  return "https://www.facebook.com/"
         case "x":         return "https://x.com/compose/tweet"
         case "linkedin":  return "https://www.linkedin.com/feed/"
         case "reddit":    return "https://www.reddit.com/submit"
@@ -87,11 +90,29 @@ struct SocialPlatform: Identifiable, Codable, Equatable {
         }
     }
 
+    // True for platforms whose own auth flows go through accounts.google.com (Gmail, YouTube).
+    var ownsGoogleAuth: Bool {
+        id == "gmail" || id == "youtube"
+    }
+
+    // Per-platform user agent override. nil = use the global mobile Safari UA.
+    // Messenger needs a desktop UA so messenger.com serves its full web interface
+    // instead of the stripped mobile shell.
+    var customUserAgent: String? {
+        switch id {
+        case "messenger":
+            return "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15"
+        default:
+            return nil
+        }
+    }
+
     var accentColor: Color {
         switch id {
         case "whatsapp":   return Color(red: 0.07, green: 0.74, blue: 0.42)
-        case "instagram":  return Color(red: 0.83, green: 0.19, blue: 0.52)
-        case "facebook":   return Color(red: 0.23, green: 0.35, blue: 0.60)
+        case "instagram":         return Color(red: 0.83, green: 0.19, blue: 0.52)
+        case "instagram-dm":      return Color(red: 0.83, green: 0.19, blue: 0.52)
+        case "instagram-publish": return Color(red: 0.83, green: 0.19, blue: 0.52)
         case "messenger":  return Color(red: 0.00, green: 0.53, blue: 1.00)
         case "gmail":      return Color(red: 0.92, green: 0.26, blue: 0.21)
         case "x":          return Color(red: 0.10, green: 0.10, blue: 0.10)

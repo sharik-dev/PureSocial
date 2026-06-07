@@ -50,6 +50,44 @@ enum ContentBlocker {
         return WKUserScript(source: js, injectionTime: .atDocumentStart, forMainFrameOnly: false)
     }
 
+    // Forces every link/popup to navigate in the same view. Without this, links that open a new
+    // tab (target="_blank") or call window.open — "Help Center", "For developers", "Log in",
+    // "Continue with…" — silently do nothing in a single-view browser. Runs at document start on
+    // every frame so it catches links injected later by single-page apps.
+    static func navigationFixUserScript() -> WKUserScript {
+        let js = """
+        (function() {
+            function fixAnchors(root) {
+                if (!root || !root.querySelectorAll) return;
+                var as = root.querySelectorAll('a[target="_blank"], a[target="_new"]');
+                for (var i = 0; i < as.length; i++) { as[i].target = '_self'; }
+            }
+            // Route window.open through a same-frame navigation instead of a (blocked) popup.
+            try {
+                window.open = function(url) {
+                    if (url) { try { window.location.assign(url); } catch (e) { window.location.href = url; } }
+                    return window;
+                };
+            } catch (e) {}
+
+            fixAnchors(document);
+            new MutationObserver(function(muts) {
+                for (var i = 0; i < muts.length; i++) {
+                    var added = muts[i].addedNodes;
+                    if (!added) continue;
+                    for (var j = 0; j < added.length; j++) {
+                        var n = added[j];
+                        if (n.nodeType !== 1) continue;
+                        if (n.tagName === 'A' && (n.target === '_blank' || n.target === '_new')) n.target = '_self';
+                        fixAnchors(n);
+                    }
+                }
+            }).observe(document.documentElement, { childList: true, subtree: true });
+        })();
+        """
+        return WKUserScript(source: js, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+    }
+
     // Called again on every didFinish navigation (belt-and-suspenders)
     static func reinjectJS(for platformId: String) -> String {
         let css = cssRules(for: platformId)
@@ -72,8 +110,7 @@ enum ContentBlocker {
 
     static func cssRules(for platformId: String) -> String {
         switch platformId {
-        case "instagram": return instagramCSS
-        case "facebook":  return facebookCSS
+        case "instagram", "instagram-dm", "instagram-publish": return instagramCSS
         case "youtube":   return youtubeCSS
         case "reddit":    return redditCSS
         default:          return ""
@@ -84,8 +121,7 @@ enum ContentBlocker {
 
     static func domHidingJS(for platformId: String) -> String {
         switch platformId {
-        case "instagram": return instagramHidingJS
-        case "facebook":  return facebookHidingJS
+        case "instagram", "instagram-dm", "instagram-publish": return instagramHidingJS
         default:          return "function hideContent() {}"
         }
     }
@@ -95,23 +131,14 @@ enum ContentBlocker {
     // CSS layer: dim and disable targeted Instagram surfaces without collapsing layout.
     static let instagramCSS = """
     .ps-muted-blocked {
-        opacity: 0.12 !important;
-        filter: grayscale(1) saturate(0) !important;
-        pointer-events: none !important;
-        user-select: none !important;
+        display: none !important;
     }
 
-    .ps-muted-blocked * {
-        pointer-events: none !important;
-    }
-
-    /* Keep the overall shell intact, just disable reels entry points. */
+    /* Keep the overall shell intact, just remove reels entry points. */
     a[href="/reels/"],
     a[href^="/reels"],
     [href="/reels/"] {
-        opacity: 0.12 !important;
-        filter: grayscale(1) saturate(0) !important;
-        pointer-events: none !important;
+        display: none !important;
     }
 
     """
@@ -124,11 +151,6 @@ enum ContentBlocker {
         function mute(el) {
             if (!el) return;
             el.classList.add('ps-muted-blocked');
-        }
-
-        function unmute(el) {
-            if (!el) return;
-            el.classList.remove('ps-muted-blocked');
         }
 
         function closestMatching(start, predicate, maxDepth) {
@@ -167,15 +189,6 @@ enum ContentBlocker {
             }
 
             return false;
-        }
-
-        function unmuteAncestors(el, maxDepth) {
-            var current = el;
-            for (var i = 0; i < maxDepth; i++) {
-                if (!current || current === document.body) break;
-                unmute(current);
-                current = current.parentElement;
-            }
         }
 
         function shouldKeepArticleInteractive(article) {
@@ -247,92 +260,6 @@ enum ContentBlocker {
                 if (!keptCreationTile) {
                     mute(storyContainer);
                 }
-            }
-        }
-
-        var allowedActionLabels = ['publier', 'publish', 'share', 'partager', 'j aime', 'like', 'unlike', 'notification', 'activity', 'heart', 'coeur'];
-        var allowedActionNodes = document.querySelectorAll('button, [role=\"button\"], a, svg');
-        for (var m = 0; m < allowedActionNodes.length; m++) {
-            if (!elementHasActionLabel(allowedActionNodes[m], allowedActionLabels)) continue;
-            unmuteAncestors(allowedActionNodes[m], 8);
-        }
-    }
-    """
-
-    // MARK: - Facebook
-
-    static let facebookCSS = """
-    .ps-muted-blocked {
-        opacity: 0.12 !important;
-        filter: grayscale(1) saturate(0) !important;
-        pointer-events: none !important;
-        user-select: none !important;
-    }
-
-    .ps-muted-blocked * {
-        pointer-events: none !important;
-    }
-
-    [href^="fb://"],
-    [aria-label*="open in app" i],
-    [aria-label*="ouvrir l’application" i],
-    [aria-label*="ouvrir l'application" i] {
-        display: none !important;
-    }
-    """
-
-    static let facebookHidingJS = """
-    function hideContent() {
-        if (!document.body) return;
-
-        function mute(el) {
-            if (!el) return;
-            el.classList.add('ps-muted-blocked');
-        }
-
-        function closestMatching(start, predicate, maxDepth) {
-            var el = start;
-            for (var i = 0; i < maxDepth; i++) {
-                if (!el || el === document.body) break;
-                if (predicate(el)) return el;
-                el = el.parentElement;
-            }
-            return null;
-        }
-
-        var postTargets = document.querySelectorAll('[role="feed"] [role="article"], [data-pagelet*="FeedUnit"], [data-ad-comet-preview="message"]');
-        for (var i = 0; i < postTargets.length; i++) {
-            mute(postTargets[i]);
-        }
-
-        var storyAndReelTargets = document.querySelectorAll('[data-pagelet*="Stories"], [data-pagelet*="Reels"], a[href*="/stories/"], a[href*="/reel/"], a[href*="/reels/"]');
-        for (var j = 0; j < storyAndReelTargets.length; j++) {
-            mute(closestMatching(storyAndReelTargets[j], function(el) {
-                return el.children.length >= 1;
-            }, 5) || storyAndReelTargets[j]);
-        }
-
-        var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
-        var node;
-        while ((node = walker.nextNode())) {
-            var text = node.textContent.trim().toLowerCase();
-            if (text !== 'open app' &&
-                text !== 'open in app' &&
-                text !== 'ouvrir l’application' &&
-                text !== 'ouvrir l\\'application') {
-                continue;
-            }
-
-            var appPrompt = closestMatching(node.parentElement, function(el) {
-                return el.tagName === 'A' || el.tagName === 'BUTTON' || el.getAttribute('role') === 'button' || el.children.length >= 1;
-            }, 8);
-
-            if (appPrompt) {
-                appPrompt.style.setProperty('display', 'none', 'important');
-                var wrapper = closestMatching(appPrompt.parentElement, function(el) {
-                    return el.children.length <= 3;
-                }, 3);
-                if (wrapper) wrapper.style.setProperty('display', 'none', 'important');
             }
         }
     }
@@ -454,6 +381,57 @@ enum ContentBlocker {
         }
     }
     """
+
+    // MARK: - Media control (global mute / block video)
+
+    // Returns JS that enforces the current mute/block-video settings on every media element,
+    // including ones added later (MutationObserver) and ones that try to (re)start playing.
+    // Safe to call repeatedly — it updates flags on an already-installed enforcer.
+    static func mediaControlJS(muteSound: Bool, blockVideo: Bool) -> String {
+        """
+        (function() {
+            window._psMuteSound = \(muteSound ? "true" : "false");
+            window._psBlockVideo = \(blockVideo ? "true" : "false");
+
+            function enforce() {
+                var videos = document.querySelectorAll('video');
+                for (var i = 0; i < videos.length; i++) {
+                    var v = videos[i];
+                    if (window._psMuteSound) { v.muted = true; v.volume = 0; }
+                    if (window._psBlockVideo) {
+                        try { v.pause(); } catch (e) {}
+                        v.style.setProperty('display', 'none', 'important');
+                    } else {
+                        v.style.removeProperty('display');
+                    }
+                }
+                var audios = document.querySelectorAll('audio');
+                for (var j = 0; j < audios.length; j++) {
+                    if (window._psMuteSound) { audios[j].muted = true; audios[j].volume = 0; }
+                }
+            }
+            window._psEnforceMedia = enforce;
+
+            if (!window._psMediaHooked) {
+                window._psMediaHooked = true;
+                // Re-enforce whenever media tries to start (covers autoplay & user taps).
+                document.addEventListener('play', function() {
+                    if (window._psMuteSound || window._psBlockVideo) enforce();
+                }, true);
+                document.addEventListener('volumechange', function(e) {
+                    if (window._psMuteSound && e.target) { e.target.muted = true; }
+                }, true);
+                var target = document.documentElement || document.body;
+                if (target) {
+                    new MutationObserver(function() { enforce(); })
+                        .observe(target, { childList: true, subtree: true });
+                }
+            }
+
+            enforce();
+        })();
+        """
+    }
 
     // MARK: - Helpers
 
